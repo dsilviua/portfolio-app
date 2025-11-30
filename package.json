@@ -1,11 +1,12 @@
 {
   "name": "portfolio-app",
-  "version": "2.0.0",
+  "version": "0.0.0",
   "description": "A modern portfolio website by Silviu Dinu",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc && vite build",
+    "build": "node scripts/generate-version.js && tsc && vite build",
+    "postdeploy": "node scripts/post-deploy.js",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",

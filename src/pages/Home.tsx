@@ -70,7 +70,6 @@ const Home = memo(() => {
 
         <HomeSection data-section="home">
           <HeroSection
-            name={contact.name}
             age={age}
             position={contact.position}
             location={contact.location}

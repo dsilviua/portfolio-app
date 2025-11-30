@@ -14,3 +14,13 @@ declare module '*.png' {
   const src: string;
   export default src;
 }
+
+declare module '@/version.json' {
+  interface VersionInfo {
+    version: string;
+    buildTime: string;
+    buildTimestamp: number;
+  }
+  const versionInfo: VersionInfo;
+  export default versionInfo;
+}

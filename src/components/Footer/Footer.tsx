@@ -1,7 +1,8 @@
 import { contentData } from '@data/content';
 import { Facebook, Github, Linkedin, Twitter } from 'lucide-react';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import styled from 'styled-components';
+import { VersionModal } from '@components/VersionModal/VersionModal';
 
 const FooterContainer = styled.footer`
   background-color: ${({ theme }) => theme.colors.card};
@@ -48,6 +49,16 @@ const Copyright = styled.div`
   gap: 0.5rem;
 `;
 
+const NameLink = styled.span`
+  cursor: pointer;
+  transition: color ${({ theme }) => theme.transitions.fast};
+  user-select: none;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.foreground};
+  }
+`;
+
 
 const socialIcons: Record<string, React.ComponentType<{ size?: number }>> = {
   github: Github,
@@ -59,6 +70,11 @@ const socialIcons: Record<string, React.ComponentType<{ size?: number }>> = {
 export const Footer = memo(() => {
   const { social, footer } = contentData;
   const currentYear = new Date().getFullYear();
+  const [isVersionModalOpen, setIsVersionModalOpen] = useState(false);
+
+  const handleNameDoubleClick = () => {
+    setIsVersionModalOpen(true);
+  };
 
   return (
     <FooterContainer>
@@ -81,9 +97,14 @@ export const Footer = memo(() => {
         </SocialLinks>
 
         <Copyright>
-          © {currentYear} {footer}
+          © {currentYear} <NameLink onDoubleClick={handleNameDoubleClick}>{footer}</NameLink>
         </Copyright>
       </FooterContent>
+
+      <VersionModal 
+        isOpen={isVersionModalOpen} 
+        onClose={() => setIsVersionModalOpen(false)} 
+      />
     </FooterContainer>
   );
 });
