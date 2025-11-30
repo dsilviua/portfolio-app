@@ -13,6 +13,19 @@ const ContactContainer = styled.div`
 const Header = styled.div`
   text-align: center;
   margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+`;
+
+const ProfileImage = styled(motion.img)`
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid ${({ theme }) => theme.colors.border};
+  box-shadow: ${({ theme }) => theme.shadows.large};
 `;
 
 const Title = styled(motion.h1)`
@@ -153,20 +166,31 @@ const Contact = memo(() => {
   return (
     <ContactContainer>
       <Header>
-        <Title
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Get In Touch
-        </Title>
-        <Subtitle
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Feel free to reach out! I'm always open to discussing new projects, creative ideas, or opportunities.
-        </Subtitle>
+        {contact.profileImage && (
+          <ProfileImage
+            src={`/src/assets/images/${contact.profileImage}`}
+            alt={contact.name}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+        )}
+        <div>
+          <Title
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Get In Touch
+          </Title>
+          <Subtitle
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Feel free to reach out! I'm always open to discussing new projects, creative ideas, or opportunities.
+          </Subtitle>
+        </div>
       </Header>
 
       {(hasEmail || hasLinkedIn || hasCalendly || hasLocation) && (

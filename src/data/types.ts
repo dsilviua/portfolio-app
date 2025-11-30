@@ -15,6 +15,7 @@ export interface Contact {
   linkedin: string;
   linkedinMessaging: string;
   calendly?: string;
+  profileImage?: string;
 }
 
 export interface Education {
@@ -28,6 +29,20 @@ export interface Education {
 export interface Game {
   title: string;
   icon: string;
+}
+
+export interface Greetings {
+  timeBasedGreetings: Array<{ type: 'morning' | 'afternoon' | 'evening'; message: string }>;
+  casualGreetings: string[];
+  introductions: string[];
+  weatherGreetings: {
+    sunny: string[];
+    rainy: string[];
+    cloudy: string[];
+    snowy: string[];
+    cold: string[]; // Below 5°C
+    hot: string[]; // Above 30°C
+  };
 }
 
 export interface Photography {
@@ -130,6 +145,7 @@ export interface ContentData {
   introduction: string[];
   footer: string;
   homepage: { title: string };
+  greetings: Greetings;
   projects: Project[];
   skills: Skills;
   social: SocialMediaLink[];

@@ -6,9 +6,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { Header } from './Header';
 
 const mockSections = [
-  { id: 'home', label: 'Home', icon: Home },
-  { id: 'projects', label: 'Projects', icon: Home },
-  { id: 'contact', label: 'Contact', icon: Home },
+  { id: 'home', label: 'Home', icon: Home, enabled: true, order: 0 },
+  { id: 'projects', label: 'Projects', icon: Home, enabled: true, order: 1 },
+  { id: 'contact', label: 'Contact', icon: Home, enabled: true, order: 2 },
 ];
 
 describe('Header', () => {

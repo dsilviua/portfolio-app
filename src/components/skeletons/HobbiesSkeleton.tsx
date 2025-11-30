@@ -1,10 +1,12 @@
 import { Skeleton, SkeletonText } from '@components/ui/Skeleton';
+import { contentData } from '@data/content';
 import styled from 'styled-components';
 
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -36,29 +38,35 @@ const CardContent = styled.div`
   padding: 1.5rem;
 `;
 
-export const HobbiesSkeleton = () => (
-  <Container>
-    <Header>
-      <Skeleton $width="200px" $height="3rem" style={{ margin: '0 auto 1rem' }} />
-      <Skeleton $width="400px" $height="1.5rem" style={{ margin: '0 auto' }} />
-    </Header>
-    <Tabs>
-      {[1, 2, 3].map((i) => (
-        <Skeleton key={i} $width="120px" $height="2.5rem" $radius="0.5rem" />
-      ))}
-    </Tabs>
-    <Content>
-      {[1, 2, 3].map((i) => (
-        <Card key={i}>
-          <Skeleton $width="100%" $height="250px" $radius="0" />
-          <CardContent>
-            <Skeleton $width="70%" $height="1.5rem" style={{ marginBottom: '1rem' }} />
-            <SkeletonText $width="100%" />
-            <SkeletonText $width="95%" />
-            <SkeletonText $width="90%" />
-          </CardContent>
-        </Card>
-      ))}
-    </Content>
-  </Container>
-);
+export const HobbiesSkeleton = () => {
+  const gamesCount = contentData.games?.length || 5;
+  const photographyCount = contentData.photography?.length || 9;
+  const tabsCount = 3; // Games, Photography, Speed Skating
+
+  return (
+    <Container>
+      <Header>
+        <Skeleton $width="200px" $height="3.5rem" style={{ margin: '0 auto 1rem' }} />
+        <Skeleton $width="400px" $height="1.5rem" style={{ margin: '0 auto' }} />
+      </Header>
+      <Tabs>
+        {Array.from({ length: tabsCount }).map((_, i) => (
+          <Skeleton key={i} $width="120px" $height="2.5rem" $radius="0.5rem" />
+        ))}
+      </Tabs>
+      <Content>
+        {Array.from({ length: Math.max(gamesCount, photographyCount, 3) }).map((_, i) => (
+          <Card key={i}>
+            <Skeleton $width="100%" $height="250px" $radius="0" />
+            <CardContent>
+              <Skeleton $width="70%" $height="1.5rem" style={{ marginBottom: '1rem' }} />
+              <SkeletonText $width="100%" />
+              <SkeletonText $width="95%" />
+              <SkeletonText $width="90%" />
+            </CardContent>
+          </Card>
+        ))}
+      </Content>
+    </Container>
+  );
+};

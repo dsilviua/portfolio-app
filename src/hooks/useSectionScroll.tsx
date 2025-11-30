@@ -3,6 +3,7 @@ import { BREAKPOINTS, FEATURES } from '../constants';
 
 interface UseSectionScrollOptions {
   onSectionChange?: (sectionId: string) => void;
+  isDraggingTOC?: boolean;
 }
 
 export const useSectionScroll = ({ onSectionChange }: UseSectionScrollOptions = {}) => {
@@ -44,11 +45,8 @@ export const useSectionScroll = ({ onSectionChange }: UseSectionScrollOptions = 
 
   // Track active section based on scroll position
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const observerOptions = {
-      root: container,
+      root: null,
       rootMargin: '-50% 0px -50% 0px',
       threshold: 0,
     };
@@ -67,7 +65,7 @@ export const useSectionScroll = ({ onSectionChange }: UseSectionScrollOptions = 
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    const sectionElements = container.querySelectorAll('[data-section]');
+    const sectionElements = document.querySelectorAll('[data-section]');
     sectionElements.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
@@ -75,22 +73,19 @@ export const useSectionScroll = ({ onSectionChange }: UseSectionScrollOptions = 
 
   // Handle scroll snapping based on 50% visibility threshold
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    if (FEATURES.DISABLE_MOBILE_SCROLL_SNAP && window.innerWidth <= BREAKPOINTS.mobile) {
+      return;
+    }
 
     let scrollTimeout: NodeJS.Timeout;
     let currentVisibleSection: string | null = null;
     const sectionVisibility = new Map<string, number>();
 
     const handleScroll = () => {
-      if (FEATURES.DISABLE_MOBILE_SCROLL_SNAP && window.innerWidth <= BREAKPOINTS.mobile) {
-        return;
-      }
-
       clearTimeout(scrollTimeout);
 
       scrollTimeout = setTimeout(() => {
-        const sections = container.querySelectorAll('[data-section]');
+        const sections = document.querySelectorAll('[data-section]');
         const viewportHeight = window.innerHeight;
         let maxVisibility = 0;
         let mostVisibleSection: HTMLElement | null = null;
@@ -136,11 +131,11 @@ export const useSectionScroll = ({ onSectionChange }: UseSectionScrollOptions = 
       }, 150);
     };
 
-    container.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
     return () => {
-      container.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       clearTimeout(scrollTimeout);
     };
   }, []);

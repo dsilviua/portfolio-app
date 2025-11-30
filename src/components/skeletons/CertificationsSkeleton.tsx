@@ -1,10 +1,12 @@
 import { Skeleton, SkeletonText } from '@components/ui/Skeleton';
+import { contentData } from '@data/content';
 import styled from 'styled-components';
 
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -32,24 +34,28 @@ const IconWrapper = styled.div`
   margin-bottom: 1rem;
 `;
 
-export const CertificationsSkeleton = () => (
-  <Container>
-    <Header>
-      <Skeleton $width="300px" $height="3rem" style={{ margin: '0 auto 1rem' }} />
-      <Skeleton $width="400px" $height="1.5rem" style={{ margin: '0 auto' }} />
-    </Header>
-    <Grid>
-      {[1, 2, 3, 4].map((i) => (
-        <Card key={i}>
-          <IconWrapper>
-            <Skeleton $width="48px" $height="48px" $radius="50%" />
-          </IconWrapper>
-          <Skeleton $width="80%" $height="1.75rem" style={{ marginBottom: '1rem' }} />
-          <Skeleton $width="120px" $height="1.5rem" style={{ marginBottom: '1rem' }} />
-          <SkeletonText $width="100%" />
-          <SkeletonText $width="90%" />
-        </Card>
-      ))}
-    </Grid>
-  </Container>
-);
+export const CertificationsSkeleton = () => {
+  const certificationsCount = contentData.certifications?.length || 4;
+
+  return (
+    <Container>
+      <Header>
+        <Skeleton $width="300px" $height="3.5rem" style={{ margin: '0 auto 1rem' }} />
+        <Skeleton $width="400px" $height="1.5rem" style={{ margin: '0 auto' }} />
+      </Header>
+      <Grid>
+        {Array.from({ length: certificationsCount }).map((_, i) => (
+          <Card key={i}>
+            <IconWrapper>
+              <Skeleton $width="48px" $height="48px" $radius="50%" />
+            </IconWrapper>
+            <Skeleton $width="80%" $height="1.75rem" style={{ marginBottom: '1rem' }} />
+            <Skeleton $width="120px" $height="1.5rem" style={{ marginBottom: '1rem' }} />
+            <SkeletonText $width="100%" />
+            <SkeletonText $width="90%" />
+          </Card>
+        ))}
+      </Grid>
+    </Container>
+  );
+};

@@ -101,7 +101,7 @@ const NotFound = memo(() => {
   return (
     <PageWrapper>
       <Header
-        sections={[{ id: 'home', label: 'Home', icon: Home }]}
+        sections={[{ id: 'home', label: 'Home', icon: Home, enabled: true, order: 0 }]}
         activeSection="home"
         onNavigate={() => {}}
       />

@@ -1,32 +1,26 @@
-import ScribbleFont from '@assets/fonts/Scribble.ttf';
 import { useTheme } from '@contexts/ThemeContext';
 import useClickOutside from '@hooks/useClickOutside';
 import useDimensions from '@hooks/useDimensions';
+import type { SectionConfig } from '@utils/sectionBuilder';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { memo, useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { createGlobalStyle } from 'styled-components';
-
-const GlobalFonts = createGlobalStyle`
-  @font-face {
-    font-family: 'Scribble';
-    src: url(${ScribbleFont}) format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-`;
+import styled from 'styled-components';
 
 const HeaderContainer = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: ${({ theme }) => theme.colors.background};
-  backdrop-filter: blur(10px);
-  background-color: ${({ theme }) => `${theme.colors.background}99`};
+  background-color: ${({ theme }) => `${theme.colors.background}40`};
+  border-bottom: 1px solid ${({ theme }) => `${theme.colors.border}30`};
+  backdrop-filter: blur(24px) saturate(220%);
+  -webkit-backdrop-filter: blur(24px) saturate(220%);
+  box-shadow: ${({ theme }) => theme.shadows.sm};
 
   @media (max-width: 768px) {
     backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     background-color: ${({ theme }) => theme.colors.background};
   }
 `;
@@ -181,14 +175,8 @@ const MobileActions = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-interface Section {
-  id: string;
-  label: string;
-  icon: any;
-}
-
 interface HeaderProps {
-  sections?: Section[];
+  sections?: SectionConfig[];
   activeSection?: string;
   onNavigate?: (sectionId: string) => void;
 }
@@ -222,7 +210,6 @@ export const Header = memo(({ sections = [], onNavigate }: HeaderProps = {}) => 
 
   return (
     <>
-      <GlobalFonts />
       <HeaderContainer>
       <Nav>
         <Logo onClick={handleLogoClick} aria-label="Scroll to top">

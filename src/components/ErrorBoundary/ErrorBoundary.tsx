@@ -245,7 +245,7 @@ class ErrorBoundary extends Component<Props, State> {
 
             <Message>
               The application encountered an unexpected error. You can try refreshing the page or return to the home page.
-              If the problem persists, please report this issue so we can fix it.
+              If the problem persists, please report this issue so I can fix it.
             </Message>
 
             <StackTraceContainer>

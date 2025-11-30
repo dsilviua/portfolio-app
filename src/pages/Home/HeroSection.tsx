@@ -1,7 +1,8 @@
 import Blinker from '@components/Blinker/Blinker';
+import { fetchWeatherData, getCompleteGreeting, resetGreetingType } from '@utils/greetings';
 import { motion } from 'framer-motion';
 import { ArrowRight, Download, Loader as LoaderIcon, Sparkles } from 'lucide-react';
-import { memo } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const HeroContainer = styled.div`
@@ -107,13 +108,13 @@ const SecondaryButton = styled.button`
 `;
 
 const Stats = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   margin-top: 4rem;
   padding-top: 2rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
-  justify-items: center;
+  justify-content: center;
 
   @media (max-width: 768px) {
     gap: 1.5rem;
@@ -176,7 +177,6 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = memo(({
-  name,
   age,
   position,
   location,
@@ -188,8 +188,42 @@ export const HeroSection = memo(({
   isGeneratingPDF,
   onViewWork,
   onDownloadCV,
-}: HeroSectionProps) => {
-  const firstName = name.split(' ')[0];
+}: Omit<HeroSectionProps, 'name'>) => {
+  // Cycle through different greetings every 10 seconds
+  const [currentGreeting, setCurrentGreeting] = useState<string>('');
+  const [weatherData, setWeatherData] = useState<{ temp: number; condition: string } | null>(null);
+  const [isLoadingGreeting, setIsLoadingGreeting] = useState(true);
+
+  // Fetch weather data on mount
+  useEffect(() => {
+    const loadWeather = async () => {
+      const weather = await fetchWeatherData();
+      setWeatherData(weather);
+    };
+    loadWeather();
+  }, []);
+
+  // Generate initial greeting (always casual on first load)
+  useEffect(() => {
+    // Reset greeting type to ensure first greeting is casual
+    resetGreetingType();
+
+    const loadInitialGreeting = async () => {
+      const greeting = await getCompleteGreeting(null); // Don't pass weather for first greeting
+      setCurrentGreeting(greeting);
+      setIsLoadingGreeting(false);
+    };
+    loadInitialGreeting();
+  }, []);
+
+  const handleCycleComplete = useCallback(async () => {
+    const newGreeting = await getCompleteGreeting(weatherData);
+    setCurrentGreeting(newGreeting);
+  }, [weatherData]);
+
+  if (isLoadingGreeting || !currentGreeting) {
+    return null; // Or a loading skeleton
+  }
 
   return (
     <HeroContainer>
@@ -204,7 +238,11 @@ export const HeroSection = memo(({
         </Greeting>
 
         <Title variants={itemVariants}>
-          <Blinker text={`Hi, I'm ${firstName}`} />
+          <Blinker
+            text={currentGreeting}
+            cycleInterval={10000}
+            onCycleComplete={handleCycleComplete}
+          />
         </Title>
 
         <Subtitle variants={itemVariants}>

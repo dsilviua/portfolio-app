@@ -5,6 +5,7 @@ import { HobbiesSkeleton } from '@components/skeletons/HobbiesSkeleton';
 import { ProjectsSkeleton } from '@components/skeletons/ProjectsSkeleton';
 import { SkillsSkeleton } from '@components/skeletons/SkillsSkeleton';
 import type { SectionConfig } from '@utils/sectionBuilder';
+import { motion } from 'framer-motion';
 import { lazy, memo, Suspense } from 'react';
 import styled from 'styled-components';
 
@@ -15,7 +16,7 @@ const Hobbies = lazy(() => import('@pages/Hobbies'));
 const Projects = lazy(() => import('@pages/Projects'));
 const Skills = lazy(() => import('@pages/Skills'));
 
-const Section = styled.section`
+const Section = styled(motion.section)`
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -27,6 +28,21 @@ const Section = styled.section`
     padding: 6rem 1.5rem 3rem;
   }
 `;
+
+const sectionVariants = {
+  hidden: {
+    opacity: 0,
+    y: 50
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+};
 
 interface DynamicSectionsProps {
   sections: SectionConfig[];
@@ -55,7 +71,14 @@ export const DynamicSections = memo(({ sections, sectionChecks }: DynamicSection
         switch (section.id) {
           case 'projects':
             return hasProjects ? (
-              <Section key={section.id} data-section="projects">
+              <Section
+                key={section.id}
+                data-section="projects"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={sectionVariants}
+              >
                 <Suspense fallback={getFallback(useSkeleton, ProjectsSkeleton)}>
                   <Projects />
                 </Suspense>
@@ -63,7 +86,14 @@ export const DynamicSections = memo(({ sections, sectionChecks }: DynamicSection
             ) : null;
           case 'certifications':
             return hasCertifications ? (
-              <Section key={section.id} data-section="certifications">
+              <Section
+                key={section.id}
+                data-section="certifications"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={sectionVariants}
+              >
                 <Suspense fallback={getFallback(useSkeleton, CertificationsSkeleton)}>
                   <Certifications />
                 </Suspense>
@@ -71,7 +101,14 @@ export const DynamicSections = memo(({ sections, sectionChecks }: DynamicSection
             ) : null;
           case 'skills':
             return hasSkills ? (
-              <Section key={section.id} data-section="skills">
+              <Section
+                key={section.id}
+                data-section="skills"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={sectionVariants}
+              >
                 <Suspense fallback={getFallback(useSkeleton, SkillsSkeleton)}>
                   <Skills />
                 </Suspense>
@@ -79,7 +116,14 @@ export const DynamicSections = memo(({ sections, sectionChecks }: DynamicSection
             ) : null;
           case 'experience':
             return hasExperience ? (
-              <Section key={section.id} data-section="experience">
+              <Section
+                key={section.id}
+                data-section="experience"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={sectionVariants}
+              >
                 <Suspense fallback={getFallback(useSkeleton, ExperienceSkeleton)}>
                   <Experience />
                 </Suspense>
@@ -87,7 +131,14 @@ export const DynamicSections = memo(({ sections, sectionChecks }: DynamicSection
             ) : null;
           case 'hobbies':
             return hasHobbies ? (
-              <Section key={section.id} data-section="hobbies">
+              <Section
+                key={section.id}
+                data-section="hobbies"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={sectionVariants}
+              >
                 <Suspense fallback={getFallback(useSkeleton, HobbiesSkeleton)}>
                   <Hobbies />
                 </Suspense>
@@ -95,7 +146,14 @@ export const DynamicSections = memo(({ sections, sectionChecks }: DynamicSection
             ) : null;
           case 'contact':
             return hasContact ? (
-              <Section key={section.id} data-section="contact">
+              <Section
+                key={section.id}
+                data-section="contact"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={sectionVariants}
+              >
                 <Suspense fallback={getFallback(useSkeleton, ContactSkeleton)}>
                   <Contact />
                 </Suspense>

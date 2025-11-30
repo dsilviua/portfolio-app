@@ -31,6 +31,7 @@ export const contentData: ContentData = {
     firstJobDate: "2018-07-01",
     linkedin: "https://www.linkedin.com/in/silviu-alexandru-dinu-138128151/",
     linkedinMessaging: "https://www.linkedin.com/messaging/compose/?recipientId=silviu-alexandru-dinu-138128151",
+    profileImage: "me.jpg",
   },
   education: [
     {
@@ -87,6 +88,52 @@ export const contentData: ContentData = {
   ],
   footer: "Built with ❤️ by Silviu Dinu",
   homepage: { title: "Hello there!" },
+  greetings: {
+    timeBasedGreetings: [
+      { type: 'morning', message: 'Good morning!' },
+      { type: 'afternoon', message: 'Good afternoon!' },
+      { type: 'evening', message: 'Good evening!' }
+    ],
+    casualGreetings: [
+      'Hi!',
+      'Hey!',
+      'Hello!'
+    ],
+    introductions: [
+      "I'm Silviu"
+    ],
+    weatherGreetings: {
+      sunny: [
+        'Lovely day!',
+        'Sunshine!',
+        'Beautiful!'
+      ],
+      rainy: [
+        'Rainy day!',
+        'Cozy weather!',
+        'Perfect for coding!'
+      ],
+      cloudy: [
+        'Cloudy today!',
+        'Grey skies!'
+      ],
+      snowy: [
+        'Winter vibes!',
+        'Stay warm!',
+        'Snowy day!'
+      ],
+      cold: [
+        'Stay warm!',
+        'Brr! Cold!',
+        'Cold today!'
+      ],
+      hot: [
+        'Hot day!',
+        'Stay cool!',
+        'Summer heat!'
+      ]
+    }
+  },
   projects: [
     {
       title: "Resume / Presentation Website",

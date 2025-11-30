@@ -1,10 +1,13 @@
-import { Skeleton, SkeletonText } from '@components/ui/Skeleton';
+import { Skeleton } from '@components/ui/Skeleton';
+import { contentData } from '@data/content';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const Header = styled.div`
@@ -13,10 +16,19 @@ const Header = styled.div`
 `;
 
 const Section = styled.div`
-  margin-bottom: 4rem;
+  background-color: ${({ theme }) => theme.colors.card};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: clamp(0.75rem, 2vw, 1rem);
+  padding: clamp(1rem, 3vw, 2.5rem);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
 `;
 
 const SectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 2rem;
 `;
 
@@ -52,66 +64,91 @@ const Card = styled.div`
   border-radius: 0.75rem;
 `;
 
-export const SkillsSkeleton = () => (
-  <Container>
-    <Header>
-      <Skeleton $width="250px" $height="3rem" style={{ margin: '0 auto 1rem' }} />
-      <Skeleton $width="450px" $height="1.5rem" style={{ margin: '0 auto' }} />
-    </Header>
+const SkillsGrid = styled.div`
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+`;
 
-    {/* Technical Skills - Bar Graph */}
-    <Section>
-      <SectionHeader>
-        <Skeleton $width="200px" $height="2rem" style={{ marginBottom: '0.5rem' }} />
-        <SkeletonText $width="350px" />
-      </SectionHeader>
-      <BarGraphGrid>
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <Bar key={i}>
-            <Skeleton $width="80px" $height={`${100 + i * 20}px`} />
-            <Skeleton $width="60px" $height="1rem" />
-          </Bar>
-        ))}
-      </BarGraphGrid>
-    </Section>
+export const SkillsSkeleton = () => {
+  const technologiesCount = contentData.technologies?.items?.length || 6;
+  const languagesCount = contentData.skills?.languages?.length || 4;
+  const toolsCount = contentData.skills?.developmentTools?.length || 6;
+  const softSkillsCount = contentData.skills?.personal?.length || 6;
 
-    {/* Languages */}
-    <Section>
-      <SectionHeader>
-        <Skeleton $width="150px" $height="2rem" style={{ marginBottom: '0.5rem' }} />
-      </SectionHeader>
-      <Tags>
-        {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} $width="100px" $height="2.5rem" $radius="2rem" />
-        ))}
-      </Tags>
-    </Section>
+  return (
+    <Container>
+      <Header>
+        <Skeleton $width="250px" $height="3.5rem" style={{ margin: '0 auto 1rem' }} />
+        <Skeleton $width="450px" $height="1.5rem" style={{ margin: '0 auto' }} />
+      </Header>
 
-    {/* Tools */}
-    <Section>
-      <SectionHeader>
-        <Skeleton $width="200px" $height="2rem" style={{ marginBottom: '0.5rem' }} />
-      </SectionHeader>
-      <CardsGrid>
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <Card key={i}>
-            <Skeleton $width="40px" $height="40px" style={{ marginBottom: '1rem' }} />
-            <Skeleton $width="70%" $height="1.5rem" />
-          </Card>
-        ))}
-      </CardsGrid>
-    </Section>
+      <SkillsGrid>
+        {/* Technical Skills */}
+        {technologiesCount > 0 && (
+          <Section>
+            <SectionHeader>
+              <Skeleton $width="48px" $height="48px" $radius="0.75rem" />
+              <Skeleton $width="200px" $height="1.75rem" />
+            </SectionHeader>
+            <BarGraphGrid>
+              {Array.from({ length: technologiesCount }).map((_, i) => (
+                <Bar key={i}>
+                  <Skeleton $width="80px" $height={`${100 + (i % 3) * 30}px`} />
+                  <Skeleton $width="60px" $height="1rem" />
+                </Bar>
+              ))}
+            </BarGraphGrid>
+          </Section>
+        )}
 
-    {/* Soft Skills */}
-    <Section>
-      <SectionHeader>
-        <Skeleton $width="150px" $height="2rem" style={{ marginBottom: '0.5rem' }} />
-      </SectionHeader>
-      <Tags>
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <Skeleton key={i} $width="120px" $height="2.5rem" $radius="2rem" />
-        ))}
-      </Tags>
-    </Section>
-  </Container>
-);
+        {/* Languages */}
+        {languagesCount > 0 && (
+          <Section>
+            <SectionHeader>
+              <Skeleton $width="48px" $height="48px" $radius="0.75rem" />
+              <Skeleton $width="150px" $height="1.75rem" />
+            </SectionHeader>
+            <Tags>
+              {Array.from({ length: languagesCount }).map((_, i) => (
+                <Skeleton key={i} $width="100px" $height="2.5rem" $radius="2rem" />
+              ))}
+            </Tags>
+          </Section>
+        )}
+
+        {/* Tools */}
+        {toolsCount > 0 && (
+          <Section>
+            <SectionHeader>
+              <Skeleton $width="48px" $height="48px" $radius="0.75rem" />
+              <Skeleton $width="200px" $height="1.75rem" />
+            </SectionHeader>
+            <CardsGrid>
+              {Array.from({ length: toolsCount }).map((_, i) => (
+                <Card key={i}>
+                  <Skeleton $width="40px" $height="40px" style={{ marginBottom: '1rem' }} />
+                  <Skeleton $width="70%" $height="1.5rem" />
+                </Card>
+              ))}
+            </CardsGrid>
+          </Section>
+        )}
+
+        {/* Soft Skills */}
+        {softSkillsCount > 0 && (
+          <Section>
+            <SectionHeader>
+              <Skeleton $width="48px" $height="48px" $radius="0.75rem" />
+              <Skeleton $width="150px" $height="1.75rem" />
+            </SectionHeader>
+            <Tags>
+              {Array.from({ length: softSkillsCount }).map((_, i) => (
+                <Skeleton key={i} $width="120px" $height="2.5rem" $radius="2rem" />
+              ))}
+            </Tags>
+          </Section>
+        )}
+      </SkillsGrid>
+    </Container>
+  );
+};

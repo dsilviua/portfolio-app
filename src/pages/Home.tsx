@@ -1,29 +1,18 @@
 import { Header } from '@components/Header/Header';
-import { contentData } from '@data/content';
 import { useSectionScroll } from '@hooks/useSectionScroll';
 import { DynamicSections } from '@pages/Home/DynamicSections';
 import { HeroSection } from '@pages/Home/HeroSection';
 import { TableOfContents } from '@pages/Home/TableOfContents';
-import { calculateAge, calculateYearsOfExperience } from '@utils/dateUtils';
-import { downloadCV } from '@utils/pdfGenerator';
-import { buildSections, checkSectionAvailability } from '@utils/sectionBuilder';
-import { memo, useState } from 'react';
+import { useHomeData } from '@pages/Home/useHomeData';
+import { usePDFDownload } from '@pages/Home/usePDFDownload';
+import { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  min-height: 100vh;
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  /* Enable iOS tap status bar to scroll to top */
+  -webkit-overflow-scrolling: touch;
 `;
 
 const HomeSection = styled.section`
@@ -38,36 +27,31 @@ const HomeSection = styled.section`
 `;
 
 const Home = memo(() => {
-  const { contact, projects, technologies } = contentData;
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [isDraggingTOC, setIsDraggingTOC] = useState(false);
 
-  const age = calculateAge(contact.birthDate);
-  const yearsOfExperience = calculateYearsOfExperience(contact.firstJobDate);
+  // Extract data and derived values
+  const {
+    contact,
+    projects,
+    technologies,
+    age,
+    yearsOfExperience,
+    sectionChecks,
+    sections,
+    firstSection,
+  } = useHomeData();
 
-  // Build sections configuration
-  const sectionChecks = checkSectionAvailability(contentData);
-  const sections = buildSections(contentData, sectionChecks);
-  const firstSection = sections.find(section => section.id !== 'home');
+  // Extract PDF generation logic
+  const { isGeneratingPDF, handleDownloadCV } = usePDFDownload();
 
   // Use section scroll hook
-  const { activeSection, containerRef, scrollToSection} = useSectionScroll();
+  const { activeSection, containerRef, scrollToSection } = useSectionScroll({ isDraggingTOC });
 
-  const handleDownloadCV = async () => {
-    setIsGeneratingPDF(true);
-    try {
-      await downloadCV();
-    } catch (error) {
-      console.error('Failed to download CV:', error);
-    } finally {
-      setIsGeneratingPDF(false);
-    }
-  };
-
-  const handleViewWork = () => {
+  const handleViewWork = useCallback(() => {
     if (firstSection) {
       scrollToSection(firstSection.id);
     }
-  };
+  }, [firstSection, scrollToSection]);
 
   return (
     <>
@@ -81,6 +65,7 @@ const Home = memo(() => {
           sections={sections}
           activeSection={activeSection}
           onNavigate={scrollToSection}
+          onDraggingChange={setIsDraggingTOC}
         />
 
         <HomeSection data-section="home">
