@@ -25,6 +25,10 @@ export const BoardSection = styled.div`
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+  
+  @media (max-width: 767px) {
+    padding: 0 1rem;
+  }
 `;
 
 export const StatusBar = styled.div`
@@ -75,6 +79,10 @@ export const GridWrapper = styled.div`
   box-shadow:
     0 0 0 2px ${({ theme }) => theme.colors.foreground},
     0 8px 32px rgba(0, 0, 0, 0.12);
+  
+  @media (max-width: 767px) {
+    max-width: 88vw;
+  }
 `;
 
 export const Grid = styled.div`
@@ -94,8 +102,8 @@ export const Box = styled.div`
 `;
 
 const cellBase = css`
-  width: clamp(32px, 9vw, 42px);
-  height: clamp(32px, 9vw, 42px);
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,6 +115,11 @@ const cellBase = css`
     transform 80ms ease;
   user-select: none;
   position: relative;
+
+  @media (max-width: 767px) {
+    width: clamp(26px, 7vw, 42px);
+    height: clamp(26px, 7vw, 42px);
+  }
 
   @media (min-width: 768px) {
     width: 48px;
